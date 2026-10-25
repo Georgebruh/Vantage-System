@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "Vantage")(type "KiCad")(uri "${KIPRJMOD}/../lib/Vantage.pretty")(options "")(descr "Vantage toner-transfer footprints"))
+)

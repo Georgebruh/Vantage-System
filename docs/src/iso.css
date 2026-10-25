@@ -1,0 +1,137 @@
+/* Layout modelled on ISO documents (ISO/IEC Directives, Part 2): cover, contents, foreword,
+   introduction, numbered clauses, annexes and bibliography. The page size is set by build.py. */
+
+@font-face { font-family: "Caladea"; src: url("fonts/Caladea-400-normal.ttf"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Caladea"; src: url("fonts/Caladea-700-normal.ttf"); font-weight: 700; font-style: normal; }
+@font-face { font-family: "Caladea"; src: url("fonts/Caladea-400-italic.ttf"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "Caladea"; src: url("fonts/Caladea-700-italic.ttf"); font-weight: 700; font-style: italic; }
+
+:root { --rule: #000; }
+
+@page {
+  margin: 25mm 20mm 22mm 20mm;
+  @top-right { content: string(docref); font: 700 10pt "Caladea", "DejaVu Serif", serif; vertical-align: bottom; padding-bottom: 4mm; }
+  @bottom-left { content: "\00A9 " string(company) " " string(year) " \2013  All rights reserved"; font: 8.5pt "Caladea", "DejaVu Serif", serif; vertical-align: top; padding-top: 4mm; }
+}
+@page :left {
+  @top-left { content: string(docref); font: 700 10pt "Caladea", "DejaVu Serif", serif; vertical-align: bottom; padding-bottom: 4mm; }
+  @top-right { content: none; }
+  @bottom-left { content: none; }
+  @bottom-right { content: "\00A9 " string(company) " " string(year) " \2013  All rights reserved"; font: 8.5pt "Caladea", "DejaVu Serif", serif; vertical-align: top; padding-top: 4mm; }
+}
+@page cover { margin: 20mm;
+  @top-right { content: none; } @top-left { content: none; }
+  @bottom-left { content: none; } @bottom-right { content: none; } }
+@page front:right { @bottom-right { content: counter(page, lower-roman); font: 700 10pt "Caladea", serif; vertical-align: top; padding-top: 4mm; } }
+@page front:left  { @bottom-left  { content: counter(page, lower-roman); font: 700 10pt "Caladea", serif; vertical-align: top; padding-top: 4mm; } }
+@page body:right  { @bottom-right { content: counter(page); font: 700 10pt "Caladea", serif; vertical-align: top; padding-top: 4mm; } }
+@page body:left   { @bottom-left  { content: counter(page); font: 700 10pt "Caladea", serif; vertical-align: top; padding-top: 4mm; } }
+@page body:nth(1 of body) { counter-reset: page 1; }
+
+html { font-family: "Caladea", "DejaVu Serif", serif; font-size: 11pt; line-height: 1.22; color: #000; }
+body { margin: 0; }
+.docref { string-set: docref content(); }
+.company { string-set: company content(); }
+.year { string-set: year content(); }
+.docref, .company, .year { display: block; height: 0; overflow: hidden; font-size: 0; line-height: 0; }
+
+section.cover { page: cover; }
+section.front { page: front; break-before: page; }
+section.body { page: body; break-before: page; }
+section.front > h1, section.body > h1.annex, section.body > h1.biblio { break-before: page; }
+section.front > h1:first-child { break-before: auto; }
+
+p { margin: 0 0 9pt 0; text-align: justify; hyphens: auto; orphans: 2; widows: 2; }
+h1, h2, h3, h4 { font-weight: 700; margin: 0; break-after: avoid; }
+h1 { font-size: 13pt; margin: 6pt 0 12pt 0; }
+h2 { font-size: 12pt; margin: 12pt 0 8pt 0; }
+h3 { font-size: 11pt; margin: 10pt 0 6pt 0; }
+h4 { font-size: 11pt; margin: 8pt 0 6pt 0; }
+h1 .num, h2 .num, h3 .num, h4 .num { display: inline-block; min-width: 0; margin-right: 1.1em; }
+section.front h1, h1.unnumbered { font-size: 14pt; }
+section.body > h1:not(.annex):not(.biblio) { break-before: auto; }
+
+/* Annex heading: three centred lines */
+h1.annex { text-align: center; font-size: 13pt; margin-bottom: 14pt; }
+h1.annex span { display: block; }
+h1.annex .kind { font-weight: 400; margin: 3pt 0; }
+h1.biblio { font-size: 14pt; }
+
+/* Terms and definitions */
+.term-num { font-weight: 700; margin: 10pt 0 0 0; }
+.term { font-weight: 700; margin: 0 0 3pt 0; }
+.term-def { margin: 0 0 4pt 0; }
+.term-note { font-size: 10pt; margin: 0 0 6pt 0; }
+
+/* Notes, examples, warnings */
+p.note, p.example { font-size: 10pt; margin-left: 0; }
+p.note .tag, p.example .tag { margin-right: 1.2em; }
+p.warning { font-weight: 700; border: 0.6pt solid #000; padding: 5pt 7pt; text-align: left; }
+
+/* Lists: a), b) for ordered, dash for unordered (ISO style) */
+ol { list-style: none; counter-reset: item; padding-left: 0; margin: 0 0 9pt 0; }
+ol > li { counter-increment: item; position: relative; padding-left: 2.0em; margin-bottom: 4pt; }
+ol > li::before { content: counter(item, lower-alpha) ")"; position: absolute; left: 0; }
+ol ol > li::before { content: counter(item) ")"; }
+ul { list-style: none; padding-left: 0; margin: 0 0 9pt 0; }
+ul > li { position: relative; padding-left: 2.0em; margin-bottom: 3pt; }
+ul > li::before { content: "\2014"; position: absolute; left: 0; }
+li > p { margin: 0 0 3pt 0; }
+
+/* Tables: title above, centred bold, full grid */
+p.table-title { text-align: center; font-weight: 700; margin: 12pt 0 5pt 0; break-after: avoid; }
+table { border-collapse: collapse; margin: 0 auto 12pt auto; font-size: 9.5pt; line-height: 1.18; width: 100%; break-inside: auto; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
+th, td { border: 0.6pt solid #000; padding: 3pt 5pt; vertical-align: top; text-align: left; }
+th { font-weight: 700; text-align: center; vertical-align: middle; }
+td.c, th.c { text-align: center; }
+table.key td:first-child { white-space: nowrap; }
+
+/* Figures: caption below, centred bold */
+figure { margin: 12pt 0 12pt 0; text-align: center; break-inside: avoid; }
+figure img { max-width: 100%; }
+figure img.wide { width: 100%; }
+figcaption { font-weight: 700; margin-top: 6pt; }
+
+code { font-family: "DejaVu Sans Mono", monospace; font-size: 9pt; }
+a { color: #000; text-decoration: none; }
+strong { font-weight: 700; }
+
+/* Contents */
+.toc h1 { font-size: 14pt; margin-bottom: 14pt; }
+.toc ul { list-style: none; padding: 0; margin: 0; }
+.toc li { padding-left: 0; margin: 0 0 3pt 0; }
+.toc li::before { content: none; }
+.toc li.l1 { font-weight: 700; margin-top: 5pt; }
+.toc li.l2 { padding-left: 2.0em; }
+.toc a::after { content: leader(".") target-counter(attr(href), page); font-weight: 400; }
+.toc a.roman::after { content: leader(".") target-counter(attr(href), page, lower-roman); }
+
+/* Cover */
+.cover-top { text-align: right; margin-top: 4mm; }
+.cover-top .doctype { font-size: 10pt; letter-spacing: 0.08em; }
+.cover-top .docid { font-size: 30pt; font-weight: 700; line-height: 1.05; }
+.cover-top .edition { font-size: 12pt; margin-top: 4pt; }
+.cover-top .date { font-size: 12pt; }
+.cover-title { margin-top: 62mm; border-top: 2.2pt solid #000; padding-top: 7mm; }
+.cover-title .t { font-size: 20pt; font-weight: 700; line-height: 1.25; text-align: left; }
+.cover-title .sub { font-size: 11pt; margin-top: 5mm; text-align: left; }
+.cover-bottom { position: absolute; bottom: 0; left: 0; right: 0; }
+.refbox { border-top: 1.2pt solid #000; padding-top: 3mm; width: 64mm; font-size: 10pt; float: left; margin-top: 30mm; }
+.refbox .big { font-size: 13pt; font-weight: 700; }
+
+/* KiCad-style title block (same fields as the drawings) */
+table.titleblock { width: 110mm; float: right; font-size: 9pt; margin: 0; line-height: 1.2; table-layout: fixed; }
+table.titleblock td { border: 0.8pt solid #000; padding: 1.6pt 4pt; }
+table.titleblock .tb-company { font-weight: 700; font-size: 10pt; padding-top: 6pt; }
+table.titleblock .title { font-weight: 700; font-style: italic; font-size: 13pt; }
+table.titleblock .rev { font-weight: 700; }
+
+/* Copyright notice page */
+.copyright { margin-top: 150mm; border: 0.6pt solid #000; padding: 6pt 9pt; font-size: 9.5pt; }
+.copyright p { text-align: left; }
+.copyright .head { font-weight: 700; letter-spacing: 0.06em; }
+
+/* Test record form */
+table.form td { height: 14pt; }
