@@ -18,3 +18,9 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+
+# Firmware
+.pio/
+.vscode/
+firmware/include/secrets.h
+readings*.csv

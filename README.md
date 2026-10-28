@@ -1,8 +1,8 @@
-# Vantage — Hardware
+# Vantage
 
-Hardware design files of the **Vantage** IoT sensor node, by Team sevenUP. The node is the field unit of a
-flood-monitoring system. This repository holds the hardware only: schematics, PCB layout, libraries, drawings
-and the instruction documents.
+Design files and firmware of the **Vantage** IoT sensor node, by Team sevenUP. The node is the field unit of a
+flood-monitoring system. This repository holds the hardware (schematics, PCB layout, libraries, drawings and the
+instruction documents) and the node firmware.
 
 **Current revision: Rev A** (2026-10-25), tag `rev-A`.
 
@@ -30,6 +30,7 @@ Vantage-Hardware/
 │   └── power-board/        schematic PDF, BOM
 ├── docs/                   instruction documents (PDF)
 │   └── src/                document sources, figures, fonts and build script
+├── firmware/               ESP32-S3 firmware (PlatformIO) and the gateway receiver
 └── tools/                  script that regenerates the drawings in outputs/
 ```
 
@@ -81,6 +82,18 @@ The documents follow the layout of ISO documents: cover, contents, foreword, int
 | `docs/src/iso.css` | Page layout and styles |
 | `docs/src/figures/` | Figures used by the documents |
 | `docs/src/fonts/` | Caladea font (SIL Open Font License, `OFL.txt`) |
+
+### Firmware (`firmware/`)
+
+| File | Description |
+|---|---|
+| `firmware/README.md` | Setup, build environments, power modes and the data format |
+| `firmware/platformio.ini` | PlatformIO project: `field` (normal operation) and `bench` (bench and functional tests) |
+| `firmware/include/config.h` | Node ID, gateway URL, mounting height, intervals and battery thresholds |
+| `firmware/include/pins.h` | Pin map (VNT-001, Annex C) |
+| `firmware/include/secrets.example.h` | Template for the Wi-Fi credentials; copy to `secrets.h`, which is not committed |
+| `firmware/src/` | Firmware sources: sensors, rain gauge, power monitors, uplink, sleep and power modes |
+| `firmware/tools/receiver.py` | Receiver for the gateway computer; writes the readings to a CSV file |
 
 ### Tools
 
